@@ -1,3 +1,4 @@
+use std::error::Error;
 use std::str::FromStr;
 
 fn part1(measurements: &[usize]) -> usize {
