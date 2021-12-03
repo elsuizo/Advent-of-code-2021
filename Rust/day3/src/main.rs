@@ -2,7 +2,7 @@ use std::error::Error;
 use std::num::ParseIntError;
 use std::str::FromStr;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 struct Bin {
     data: Vec<bool>,
 }
@@ -13,10 +13,10 @@ impl Bin {
     }
 
     fn to_decimal(&self) -> usize {
-        let mut result: u8 = 0;
+        let mut result: u32 = 0;
         self.data.iter().for_each(|&bit| {
             result <<= 1;
-            result ^= bit as u8;
+            result ^= bit as u32;
         });
         result as usize
     }
@@ -53,17 +53,22 @@ impl Report {
         counter
     }
 
+    fn get_data_len(&self) -> usize {
+        self.bin[0].data.len()
+    }
+
     fn count_false(&self, position: usize) -> usize {
         self.bin.len() - self.count_true(position)
     }
 
+    fn most_common(&self, position: usize) -> bool {
+        self.count_true(position) > self.count_false(position)
+    }
+
     fn generate_gamma_rate(&self) -> Bin {
         let mut result = Vec::new();
-        let len = self.bin[0].data.len();
-        for index in 0..len {
-            let trues = self.count_true(index);
-            let falses = self.count_false(index);
-            if trues > falses {
+        for index in 0..self.get_data_len() {
+            if self.most_common(index) {
                 result.push(true);
             } else {
                 result.push(false);
@@ -84,6 +89,19 @@ impl Report {
     fn power_consumption(&self) -> usize {
         self.generate_gamma_rate().to_decimal() * self.generate_epsilon_rate().to_decimal()
     }
+
+    fn oxygen_generator_rating(&self) -> usize {
+        let mut numbers = self.bin.clone();
+        for index in 0..self.get_data_len() {
+            if self.most_common(index) {
+                numbers.retain(|n| n.data[index] == true);
+            } else {
+                println!("numbers: {:?}", numbers.len());
+                numbers.retain(|n| n.data[index] == false);
+            }
+        }
+        numbers[0].to_decimal()
+    }
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
@@ -94,7 +112,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
     let report = Report::new(bins);
 
-    println!("power_consumption: {:}", report.power_consumption());
+    // println!("power_consumption: {:}", report.power_consumption());
+    println!("power_consumption: {:}", report.oxygen_generator_rating());
 
     Ok(())
 }
