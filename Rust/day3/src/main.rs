@@ -33,14 +33,14 @@ impl FromStr for Bin {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 struct Report {
     bin: Vec<Bin>,
 }
 
 impl Report {
-    fn new(bin: Vec<Bin>) -> Self {
-        Self { bin }
+    fn new(bin: &[Bin]) -> Self {
+        Self { bin: bin.to_vec() }
     }
 
     fn count_true(&self, position: usize) -> usize {
@@ -62,7 +62,11 @@ impl Report {
     }
 
     fn most_common(&self, position: usize) -> bool {
-        self.count_true(position) > self.count_false(position)
+        self.count_true(position) >= self.count_false(position)
+    }
+
+    fn most_common2(&self, position: usize) -> bool {
+        self.count_false(position) <= self.count_true(position)
     }
 
     fn generate_gamma_rate(&self) -> Bin {
@@ -90,17 +94,34 @@ impl Report {
         self.generate_gamma_rate().to_decimal() * self.generate_epsilon_rate().to_decimal()
     }
 
-    fn oxygen_generator_rating(&self) -> usize {
-        let mut numbers = self.bin.clone();
+    fn oxygen_generator_rating(&mut self) -> usize {
         for index in 0..self.get_data_len() {
             if self.most_common(index) {
-                numbers.retain(|n| n.data[index] == true);
+                self.bin.retain(|n| n.data[index] == true);
             } else {
-                println!("numbers: {:?}", numbers.len());
-                numbers.retain(|n| n.data[index] == false);
+                self.bin.retain(|n| n.data[index] == false);
             }
         }
-        numbers[0].to_decimal()
+        self.bin[0].to_decimal()
+    }
+
+    fn co2_scrubber_rating(&mut self) -> usize {
+        for index in 0..self.get_data_len() {
+            if self.bin.len() > 1 {
+                if !self.most_common(index) {
+                    self.bin.retain(|n| n.data[index] == true);
+                } else {
+                    self.bin.retain(|n| n.data[index] == false);
+                }
+            }
+        }
+        self.bin[0].to_decimal()
+    }
+
+    // TODO(elsuizo:2021-12-03): si ya se no es muy L-gante
+    fn life_support_ratin(&mut self) -> usize {
+        let mut b = self.clone();
+        b.oxygen_generator_rating() * self.co2_scrubber_rating()
     }
 }
 
@@ -110,10 +131,9 @@ fn main() -> Result<(), Box<dyn Error>> {
     for line in input.lines() {
         bins.push(Bin::from_str(line)?);
     }
-    let report = Report::new(bins);
+    let mut report = Report::new(&bins);
 
-    // println!("power_consumption: {:}", report.power_consumption());
-    println!("power_consumption: {:}", report.oxygen_generator_rating());
+    println!("power_consumption: {:}", report.life_support_ratin());
 
     Ok(())
 }
