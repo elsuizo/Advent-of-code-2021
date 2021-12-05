@@ -116,7 +116,7 @@ impl Bingo {
                 }
             }
         }
-        (0, 0)
+        unreachable!()
     }
 
     fn simulate2(&mut self) -> (usize, usize) {
@@ -133,7 +133,7 @@ impl Bingo {
                 }
             }
         }
-        (0, 0)
+        unreachable!()
     }
 
     fn sum_unmarked(&self, board_number: usize) -> usize {
