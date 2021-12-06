@@ -1,6 +1,5 @@
 use std::collections::HashMap;
 use std::error::Error;
-
 //-------------------------------------------------------------------------
 //                        Line
 //-------------------------------------------------------------------------
@@ -74,14 +73,55 @@ fn generate_path(lines: &[Line]) -> HashMap<(usize, usize), usize> {
                     }
                 }
             }
-            // TODO(elsuizo:2021-12-05): faltaria hacer esto para la parte2
-            LineType::WithSlope => {}
+            // TODO(elsuizo:2021-12-05): no me gusta como quedo esto ...
+            LineType::WithSlope => {
+                use std::cmp::Ordering::*;
+                match (x1.cmp(&x2), y1.cmp(&y2)) {
+                    (Greater, Greater) => {
+                        let mut x = x1;
+                        let mut y = y1;
+                        while x != x2 && y != y2 {
+                            *result.entry((x, y)).or_insert(0) += 1;
+                            x -= 1;
+                            y -= 1;
+                        }
+                    }
+                    (Greater, Less) => {
+                        let mut x = x1;
+                        let mut y = y1;
+                        while x != x2 && y != y2 {
+                            *result.entry((x, y)).or_insert(0) += 1;
+                            x -= 1;
+                            y += 1;
+                        }
+                    }
+                    (Less, Greater) => {
+                        let mut x = x1;
+                        let mut y = y1;
+                        while x != x2 && y != y2 {
+                            *result.entry((x, y)).or_insert(0) += 1;
+                            x += 1;
+                            y -= 1;
+                        }
+                    }
+                    (Less, Less) => {
+                        let mut x = x1;
+                        let mut y = y1;
+                        while x != x2 && y != y2 {
+                            *result.entry((x, y)).or_insert(0) += 1;
+                            x += 1;
+                            y += 1;
+                        }
+                    }
+                    (_, _) => {}
+                }
+            }
         }
     }
     result
 }
 //-------------------------------------------------------------------------
-//                        main
+//                       main
 //-------------------------------------------------------------------------
 fn main() -> Result<(), Box<dyn Error>> {
     let input = include_str!("../input_small.txt");
@@ -96,9 +136,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
 
     let map = generate_path(&lines);
-    println!("map: {:?}", map);
+    // println!("map: {:?}", map);
     let result1 = map.values().filter(|&&v| v >= 2).count();
-
     println!("result1: {}", result1);
     Ok(())
 }
