@@ -80,37 +80,41 @@ fn generate_path(lines: &[Line]) -> HashMap<(usize, usize), usize> {
                     (Greater, Greater) => {
                         let mut x = x1;
                         let mut y = y1;
-                        while x != x2 && y != y2 {
-                            *result.entry((x, y)).or_insert(0) += 1;
+                        *result.entry((x1, y1)).or_insert(0) += 1;
+                        while !(x == x2 && y == y2) {
                             x -= 1;
                             y -= 1;
+                            *result.entry((x, y)).or_insert(0) += 1;
                         }
                     }
                     (Greater, Less) => {
                         let mut x = x1;
                         let mut y = y1;
-                        while x != x2 && y != y2 {
-                            *result.entry((x, y)).or_insert(0) += 1;
+                        *result.entry((x1, y1)).or_insert(0) += 1;
+                        while !(x == x2 && y == y2) {
                             x -= 1;
                             y += 1;
+                            *result.entry((x, y)).or_insert(0) += 1;
                         }
                     }
                     (Less, Greater) => {
                         let mut x = x1;
                         let mut y = y1;
-                        while x != x2 && y != y2 {
-                            *result.entry((x, y)).or_insert(0) += 1;
+                        *result.entry((x1, y1)).or_insert(0) += 1;
+                        while !(x == x2 && y == y2) {
                             x += 1;
                             y -= 1;
+                            *result.entry((x, y)).or_insert(0) += 1;
                         }
                     }
                     (Less, Less) => {
                         let mut x = x1;
                         let mut y = y1;
-                        while x != x2 && y != y2 {
-                            *result.entry((x, y)).or_insert(0) += 1;
+                        *result.entry((x1, y1)).or_insert(0) += 1;
+                        while !(x == x2 && y == y2) {
                             x += 1;
                             y += 1;
+                            *result.entry((x, y)).or_insert(0) += 1;
                         }
                     }
                     (_, _) => {}
@@ -124,7 +128,7 @@ fn generate_path(lines: &[Line]) -> HashMap<(usize, usize), usize> {
 //                       main
 //-------------------------------------------------------------------------
 fn main() -> Result<(), Box<dyn Error>> {
-    let input = include_str!("../input_small.txt");
+    let input = include_str!("../input.txt");
 
     let mut lines = Vec::new();
     for raw_line in input.lines() {
