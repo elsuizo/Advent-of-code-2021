@@ -28,7 +28,11 @@ fn cumsum(end: usize) -> usize {
     (1..=end).fold(0, |sum, item| sum + item)
 }
 
-// fn part2(optimal_position: usize, positions: &[usize]) -> usize {}
+fn move_cost(initial: i32, end: i32) -> usize {
+    cumsum((initial - end).abs() as usize)
+}
+
+fn part2(positions: &[usize]) -> usize {}
 
 // TODO(elsuizo:2021-12-11): esta manera de parsear el input tiene el problema de que no lee el
 // ultimo numbero y hay que agregarle una coma al final ...
@@ -43,4 +47,7 @@ fn main() {
     let median = median(&horizontal_positions);
     let result1 = part1(median, &horizontal_positions);
     println!("result1: {}", result1);
+
+    let result2 = part2(&horizontal_positions);
+    println!("result2: {}", result2);
 }
