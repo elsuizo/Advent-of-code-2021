@@ -1,3 +1,4 @@
+// use std::ops::RangeInclusive;
 use std::str::FromStr;
 
 fn median(input: &[usize]) -> usize {
@@ -18,7 +19,16 @@ fn part1(median: usize, positions: &[usize]) -> usize {
     result as usize
 }
 
-fn part2(optimal_position: usize, positions: &[usize]) -> usize {}
+/// cumsum implementation
+///
+/// input: `end`: `usize`
+///
+/// output: `usize` the value of perform a cumulative sum from 0 to end
+fn cumsum(end: usize) -> usize {
+    (1..=end).fold(0, |sum, item| sum + item)
+}
+
+// fn part2(optimal_position: usize, positions: &[usize]) -> usize {}
 
 // TODO(elsuizo:2021-12-11): esta manera de parsear el input tiene el problema de que no lee el
 // ultimo numbero y hay que agregarle una coma al final ...

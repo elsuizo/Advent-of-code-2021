@@ -3,47 +3,48 @@
 ## Parte1
 
 El fondo del mar se esta volviendo cada vez mas enpinado, quizas las llaves del
-trineo se perdieron de esta manera, un banco de peces linterna pasa nadando. Ellos
-deben expandirse de manera rapida para llegar a esa cantidad de numbero (capaz que
-exponencialmente) debemos modelar la tasa de nacimiento para estar seguros
+trineo se perdieron de esta manera, un banco de peces linterna pasa nadando.
+Ellos deben expandirse de manera rapida para llegar a esa cantidad de numbero
+(capaz que exponencialmente) debemos modelar la tasa de nacimiento para estar
+seguros
 
-Aunque no sabemos nada sobre esta especie en especial nosotros hicimos unas estimaciones
-sobre sus atributos. Seguramente cada pez linterna crea uno nuevo una vez cada 7
-dias
+Aunque no sabemos nada sobre esta especie en especial nosotros hicimos unas
+estimaciones sobre sus atributos. Seguramente cada pez linterna crea uno nuevo
+una vez cada 7 dias
 
-Sin embargo este proceso no esta necesariamente sincronizado entre cada pez linterna
-un pez linterna debe tener 2 dias de descanso hasta que pueda crear otro pez, mientras
-que otro puede que necesite 4 dias. Entonces podemos modela a cada pez como un solo numero
-que representa el numero de dias hasta que crea un nuevo pez linterna.
+Sin embargo este proceso no esta necesariamente sincronizado entre cada pez
+linterna un pez linterna debe tener 2 dias de descanso hasta que pueda crear
+otro pez, mientras que otro puede que necesite 4 dias. Entonces podemos modelar
+a cada pez como un solo numero que representa el numero de dias hasta que crea
+un nuevo pez linterna.
 
-Es mas, razonamos que un nuevo pez linterna puede necesariamente necesitar mas tiempo
-antes de que pueda producir mas peces: dos mas dias para su primer ciclo
+Es mas, razonamos que un nuevo pez linterna puede necesariamente necesitar mas
+tiempo antes de que pueda producir mas peces: dos mas dias para su primer ciclo
 
 Entonces, supongamos que tenemos un pez linterna con reloj interno de 3
 
  - Despues de 1 dia, su reloj interno se convierte en 2
  - Despues de otro dia su reloj interno se convierte en 1
  - Despues de otro dia su reloj interno se convierte en 0
- - Despues de otro dia su reloj interno se resetea a 6 y este puede crear un nuevo
-   pez linterna con un reloj interno de 8
- - Despues de otro dia, el primer pez debe tener un reloj interno de 5 y el segundo
-   pez linterna debe tener un reloj interno de 7
+ - Despues de otro dia su reloj interno se resetea a 6 y este puede crear un
+   nuevo pez linterna con un reloj interno de 8
+ - Despues de otro dia, el primer pez debe tener un reloj interno de 5 y el
+   segundo pez linterna debe tener un reloj interno de 7
 
-Un pez linterna que puede crear un nuevo pez resetea su reloj a 6, no a 7 (porque el 0 esta incluido
-como valor valido de timer). El nuevo pez linterna comienza con un reloj interno de 8
-y no comienza a contar hasta el proximo dia.
+Un pez linterna que puede crear un nuevo pez resetea su reloj a 6, no a 7
+(porque el 0 esta incluido como valor valido de timer). El nuevo pez linterna
+comienza con un reloj interno de 8 y no comienza a contar hasta el proximo dia.
 
-Viendo lo que queremos hacer el submarino automaticamente produce una lista de las
-edades de muchos de los peces que estan cerca(nuestro input). Por ejemplo supongamos
-que nos dan la siguiente lista:
+Viendo lo que queremos hacer el submarino automaticamente produce una lista de
+las edades de muchos de los peces que estan cerca(nuestro input). Por ejemplo
+supongamos que nos dan la siguiente lista:
 
 ```text
-3,4,3,1,2
-```
+3,4,3,1,2 ```
 
-Esta lista significa que el primer pez tiene un reloj interno de 3, el segundo de 4
-el tercero de 3 y asi hasta el ultimo que tiene un reloj interno de 2. Simulando
-estos peces sobre algunos dias nos da lo siguiente:
+Esta lista significa que el primer pez tiene un reloj interno de 3, el segundo
+de 4 el tercero de 3 y asi hasta el ultimo que tiene un reloj interno de 2.
+Simulando estos peces sobre algunos dias nos da lo siguiente:
 
 ```text
 Initial state: 3,4,3,1,2
@@ -73,5 +74,5 @@ los otros numeros se decrementan en 1 si estuvo presente al comienzo del dia
 En este ejemplo, despues de 18 dias hay un total de 26 peces. Despues de 80 dias
 habra un total de 5934
 
-Hay que encontrar la manera de simular a los peces linterna. Cuantos peces hay despues
-de 80 dias???
+Hay que encontrar la manera de simular a los peces linterna. Cuantos peces hay
+despues de 80 dias???
