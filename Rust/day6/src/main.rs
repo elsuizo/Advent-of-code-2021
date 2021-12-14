@@ -1,47 +1,31 @@
-use std::cell::Cell;
 use std::error::Error;
 use std::str::FromStr;
 
 #[derive(Debug)]
 struct LanternFish {
-    timer: usize,
+    internal_clock: usize,
 }
 
 impl LanternFish {
-    fn new(timer: usize) -> Self {
-        Self { timer }
+    fn new(internal_clock: usize) -> Self {
+        Self { internal_clock }
     }
 
-    // TODO(elsuizo:2021-12-06): hacer que estas variables hardcodeadas sean const
-    fn decrement_timer(&mut self) {
-        if self.timer == 0 {
-            self.timer = 6;
-        } else {
-            self.timer -= 1;
+    fn decrement_internal_clock(&mut self) -> bool {
+        if self.internal_clock == 6 {
+            self.internal_clock = 0;
+            return true;
         }
+        self.internal_clock -= 1;
+        return false;
     }
 }
 
-struct System {
-    initial_fishs: Vec<LanternFish>,
-}
-
-impl System {
-    fn new(fishs: Vec<LanternFish>) -> Self {
-        Self { fishs }
-    }
-
-    fn add_new_fish(&mut self) {
-        self.fishs.push(LanternFish::new(8));
-    }
-
-    fn simulate(&mut self, days: usize) {
-        for _ in 0..days {
-            for mut fish in self.fishs.iter_mut() {
-                if fish.timer == 0 {
-                    self.add_new_fish();
-                }
-                fish.decrement_timer();
+fn simulate_system(initial_fishs: &mut [LanternFish], days: usize) {
+    for day in 0..days {
+        for fish in initial_fishs.iter_mut() {
+            if fish.decrement_internal_clock() {
+                initial_fishs += LanternFish::new(8);
             }
         }
     }
@@ -52,12 +36,10 @@ fn main() -> Result<(), Box<dyn Error>> {
     let initial_states: Vec<_> = input
         .split(',')
         .filter_map(|w| usize::from_str(w).ok())
+        .map(|n| LanternFish::new(n))
         .collect();
 
-    let mut fishs = Vec::new();
-    for state in initial_states {
-        fishs.push(LanternFish::new(state));
-    }
+    println!("initial_states: {:?}", initial_states);
 
     Ok(())
 }

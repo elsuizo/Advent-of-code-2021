@@ -11,14 +11,14 @@ enum AdjacencyType {
 #[derive(Debug)]
 struct Height {
     element: u8,
-    adjacency_type: Option<AdjacencyType>,
+    adjacency_type: AdjacencyType,
 }
 
 impl Height {
-    fn new(element: u8) -> Self {
+    fn new(element: u8, adjacency_type: AdjacencyType) -> Self {
         Self {
             element,
-            adjacency_type: None,
+            adjacency_type,
         }
     }
 }
@@ -62,10 +62,28 @@ fn main() -> Result<(), Box<dyn Error>> {
     let input = include_str!("../input_small.txt");
     let mut height_map = HeightMap::init(5, 10);
     for line in input.lines() {
-        for (index, num) in line.chars().flat_map(|n| n.to_digit(10)).enumerate() {
-            let height = Height::new(num as u8);
-            height_map.heights.push(height);
+        for i in 0..5 {
+            for j in 0..10 {
+                for num in line.chars().flat_map(|n| n.to_digit(10)) {
+                    match (i, j) {
+                        (i @ 1..9,) => {
+                            height_map[(i, j)] =
+                                Height::new(num as u8, AdjacencyType::Edge([0u8; 3]))
+                        }
+                        (_, 10) => {
+                            height_map[(i, j)] =
+                                Height::new(num as u8, AdjacencyType::Edge([0u8; 3]))
+                        }
+                        (0, 0) | (5, 0) | (5, 10) | (0, 10) => {
+                            height_map[(i, j)] =
+                                Height::new(num as u8, AdjacencyType::Corner([0u8; 2]))
+                        }
+                    }
+                }
+            }
         }
+        // let height = Height::new(num as u8);
+        // height_map.heights.push(height);
     }
     println!("height_map: {:?}", height_map);
 

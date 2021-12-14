@@ -14,9 +14,9 @@ una vez cada 7 dias
 
 Sin embargo este proceso no esta necesariamente sincronizado entre cada pez
 linterna un pez linterna debe tener 2 dias de descanso hasta que pueda crear
-otro pez, mientras que otro puede que necesite 4 dias. Entonces podemos modelar
-a cada pez como un solo numero que representa el numero de dias hasta que crea
-un nuevo pez linterna.
+otro pez, mientras que otro puede que necesite 4 dias. Entonces podemos modelar a
+cada pez como un solo numero que representa el numero de dias hasta que crea un
+nuevo pez linterna.
 
 Es mas, razonamos que un nuevo pez linterna puede necesariamente necesitar mas
 tiempo antes de que pueda producir mas peces: dos mas dias para su primer ciclo
@@ -40,7 +40,8 @@ las edades de muchos de los peces que estan cerca(nuestro input). Por ejemplo
 supongamos que nos dan la siguiente lista:
 
 ```text
-3,4,3,1,2 ```
+3,4,3,1,2
+```
 
 Esta lista significa que el primer pez tiene un reloj interno de 3, el segundo
 de 4 el tercero de 3 y asi hasta el ultimo que tiene un reloj interno de 2.
